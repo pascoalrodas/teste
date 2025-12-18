@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amor em Código</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-image: url('./borboleta.jpg');
+            background-size:cover;
+            background-repeat: no-repeat;
+            ">
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 20px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 14px 28px;
+            margin: 20px;
+            background: #ff4081;
+            border: none;
+            color: #fff;
+            font-size: clamp(1rem, 4vw, 1.3rem);
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+            min-width: 220px;
+        }
+
+        button:hover {
+            background: #e91e63;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #resultado {
+            font-size: clamp(1.4rem, 5vw, 2rem);
+            color: #90ee90;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .coracao {
+            position: absolute;
+            font-size: clamp(24px, 6vw, 40px);
+            animation: subir 4s linear forwards;
+            color: #ff69b4;
+            pointer-events: none;
+            user-select: none;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @keyframes subir {
+            0% {
+                transform: translateY(0) translateX(-50%) scale(0.8);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100vh) translateX(-50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Efeito de corações em posições aleatórias */
+        @media (min-width: 768px) {
+            .coracao {
+                left: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>if (cuidado && verdade)</h1>
+    <p>{ amor += 1; }</p>
+
+    <button onclick="tocarCoracao()">Tocar com Cuidado e Verdade</button>
+    <div id="resultado">Amor: 0</div>
+
+    <audio id="musica" src="cosoindefinido.mp3" preload="auto"></audio>
+
+    <script>
+        let amor = 0;
+        let cuidado = true;
+        let verdade = true;
+        const musica = document.getElementById("musica");
+        let tocouMusica = false;
+
+        function tocarCoracao() {
+            if (cuidado && verdade) {
+                amor++;
+                document.getElementById("resultado").textContent = `Amor: ${amor}`;
+
+                criarCoracao();
+
+                if (!tocouMusica) {
+                    musica.play().catch(error => {
+                        console.log("Áudio bloqueado pelo navegador (comum em mobile):", error);
+                    });
+                    tocouMusica = true;
+                }
+            }
+        }
+
+        function criarCoracao() {
+            const coracao = document.createElement("div");
+            coracao.className = "coracao";
+            coracao.textContent = "❤️";
+
+            // Em telas pequenas: sai do centro (mais bonito no celular)
+            // Em telas grandes: posições aleatórias
+            if (window.innerWidth < 768) {
+                coracao.style.left = Math.random() * 80 + 10 + "%"; // entre 10% e 90%
+            } else {
+                coracao.style.left = Math.random() * window.innerWidth + "px";
+            }
+
+            document.body.appendChild(coracao);
+
+            setTimeout(() => {
+                if (coracao.parentNode) {
+                    coracao.remove();
+                }
+            }, 4100);
+        }
+    </script>
+</body>
+
+</html>
